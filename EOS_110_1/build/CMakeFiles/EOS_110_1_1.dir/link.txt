@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/EOS_110_1_1.dir/src/EOS_110_1_1.c.o -o EOS_110_1_1  -lm 
