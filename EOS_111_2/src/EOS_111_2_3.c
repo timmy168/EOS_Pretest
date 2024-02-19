@@ -15,10 +15,13 @@ NODE_t *mergeSorted21(NODE_t *l1, NODE_t *l2)
     if (l1->v < l2->v) {
         l1->next = mergeSorted21(l1->next, l2);
         return l1;
-    } else {
+    } else if(l1->v > l2->v) {
         l2->next = mergeSorted21(l2->next, l1);
         return l2;
-    }
+    }	else{
+				l1->next = mergeSorted21(l1->next, l2->next);
+				return l2;
+		}
 }
 
 int main() {
@@ -60,16 +63,18 @@ int main() {
     }
 
     NODE_t *h_list3 = mergeSorted21(h_list1, h_list2);
-
-    // Output the merged list
-    printf("Merged list:\n");
-    ptr = h_list3;
-    while (ptr != NULL) {
-        printf("%d ", ptr->v);
-        ptr = ptr->next;
+		
+		// Find the middle node of the merged list
+    NODE_t *slow_ptr = h_list3;
+    NODE_t *fast_ptr = h_list3;
+    while (fast_ptr != NULL && fast_ptr->next != NULL) {
+        slow_ptr = slow_ptr->next;
+        fast_ptr = fast_ptr->next->next;
     }
-    printf("\n");
-
+    // If the length of the list is odd, slow_ptr points to the middle node.
+    // If the length is even, slow_ptr points to the second middle node.
+		printf("Middle node value: %d\n", slow_ptr->v);
+	
     // Free the memory
     while (h_list3 != NULL) {
         ptr = h_list3;
