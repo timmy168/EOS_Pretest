@@ -1,64 +1,55 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 
-int myatoi(const char *str, int *digits, int *num_digits) {
+void myatoi(const char *str,int* value, int *digits, int *num_digits) {
     int sign = 1; // 1 for positive, -1 for negative
-    int value = 0; // number value
     int count = 0; // digits of number
+    *value = 0;
 
     // check the string is empty or not
     if (str == NULL) {
-        return -1; // empty string
+        printf("Empty String!");
+        return;
     }
 
     // check the sign
     if (str[0] == '-') {
-        sign = -1; // negative
-        str++; // move foward the str pointer
+        sign = -1; 
+        str++; 
     } else if (str[0] == '+') {
-        str++; // move foward the str pointer
+        str++; 
     }
 
     while (*str != '\0') {
-        // check the char is number or not
         if (*str < '0' || *str > '9') {
-            return -2; 
+            printf("Error: Non-numeric character found\n"); 
+            return;
         }
 
-        // convert the string to num
-        value = value * 10 + (*str - '0');
-
-        // convert the char to num and save if digit
+        *value = *value * 10 + (*str - '0');
         digits[count] = *str - '0';
         count++; 
-
         str++;
     }
 
-    // set the sign
-    value *= sign;
+    *value *= sign;
+    printf("Value: %d\n", *value);
+    printf("Digits: ");
+        for (int i = 0; i < count; i++) {
+            printf("%d ", (int)(sign * digits[i] * pow(10,count-i-1)));
+        }
 
+    printf("\n");
     *num_digits = count;
-    return value;
 }
 
 int main() {
-    const char *str1 = "123";
-    const char *str2 = "-123";
-    const char *str3 = "123g";
-    int digits[10]; 
-    int num_digits; 
-    int result; 
-    result = myatoi(str1, digits, &num_digits);
-    if (result >= 0) {
-        printf("Value: %d\n", result);
-        printf("Digits: ");
-        for (int i = 0; i < num_digits; i++) {
-            printf("%d ", digits[i]);
-        }
-        printf("\n");
-    } else {
-        printf("Error: Non-numeric character found\n");
-    }
+    char str[100];
+    printf("Enter a string of digits:");
+    scanf("%s",str);
+    int digits[100]; 
+    int value,num_digits; 
+    myatoi(str, &value, digits, &num_digits);
     return 0;
 }
